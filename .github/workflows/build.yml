@@ -5,26 +5,13 @@ on:
     branches: [ "**" ]
 jobs:
   build:
-    strategy:
-      fail-fast: false
-      matrix:
-        config:
-        - { name: Windows, os: windows-latest }
-        - { name: Android64, os: ubuntu-latest, target: Android64 }
-    name: ${{ matrix.config.name }}
-    runs-on: ${{ matrix.config.os }}
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@v4
     - uses: geode-sdk/build-geode-mod@main
-      with:
-        combine: true
-        target: ${{ matrix.config.target }}
-  package:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-    - uses: geode-sdk/build-geode-mod/combine@main
       id: build
+      with:
+        sdk: nightly
     - uses: actions/upload-artifact@v4
       with:
         name: Build Output
